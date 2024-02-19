@@ -255,7 +255,7 @@ class Core extends JPanel {
 
         timer.start();
 
-        speedIncreaseTimer = new Timer(30000, new ActionListener() {
+        speedIncreaseTimer = new Timer(5000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
@@ -389,7 +389,7 @@ class Core extends JPanel {
             ball.setVx((Math.random() < 0.5) ? ball.getVx() : -1 * ball.getVx());
 
         }
-        
+
     }
     
 
