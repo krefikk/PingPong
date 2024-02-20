@@ -7,7 +7,7 @@ W/S and Up/Down -> Move paddles.
 ESC -> Restart the game.
 
 ## Special Features
-Z -> Slows down the ball for the left player. Can only be used once in a game.\n
+Z -> Slows down the ball for the left player. Can only be used once in a game.<br>
 CTRL -> Slows down the ball for the right player. Can only be used once in a game.
 X -> Speeds up the ball for the left player. Can only be used once in a game.
 SHIFT -> Speeds up the ball for the right player. Can only be used once in a game.
