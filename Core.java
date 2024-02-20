@@ -38,6 +38,8 @@ class Core extends JPanel {
     protected Ball ball;
     private java.util.Timer slowDownTimer;
     private int lastWinner = 0; //1 means right, -1 means left
+    private boolean speeding = false;
+    private Shape tile1, tile2;
 
     JLabel flameLabelRight;
     JLabel flameLabelLeft;
@@ -63,8 +65,8 @@ class Core extends JPanel {
         vx = (Math.random() < 0.5) ? vx : -1*vx;
         vy = (Math.random() < 0.5) ? vy : -1*vy;
 
-        Shape tile1 = new Rectangle(tileWidth / 2, Interface.frameHeight / 3, tileWidth, tileHeight);
-        Shape tile2 = new Rectangle(Interface.frameWidth - tileWidth*2, Interface.frameHeight / 3, tileWidth, tileHeight);
+        tile1 = new Rectangle(tileWidth / 2, Interface.frameHeight / 3, tileWidth, tileHeight);
+        tile2 = new Rectangle(Interface.frameWidth - tileWidth*2, Interface.frameHeight / 3, tileWidth, tileHeight);
         tileLeft = new ColoredShape(tile1, Color.white);
         tileRight = new ColoredShape(tile2, Color.white);
         tiles.add(0, tileLeft);
@@ -139,6 +141,7 @@ class Core extends JPanel {
                     restartGame();
 
                 }
+
             }
 
             @Override
@@ -454,15 +457,11 @@ class Core extends JPanel {
                         }
 
                         if(collidedLeftTile && speedUpPressedRight && ball.getColor() == Color.ORANGE) {
-                            ball.setColor(Color.WHITE);
-                            ball.setVx(ball.getVx() * 1/3);
-                            speedUpPressedRight = false;
+                            stopSpeedingRight();
                         }
 
                         if(collidedRightTile && speedUpPressedLeft && ball.getColor() == Color.ORANGE) {
-                            ball.setColor(Color.WHITE);
-                            ball.setVx(ball.getVx() * 1/3);
-                            speedUpPressedLeft = false;
+                            stopSpeedingLeft();
                         }
 
                         if(moveTile1Up && collidedLeftTile) {
@@ -687,6 +686,7 @@ class Core extends JPanel {
     public void speedUpCollided() {
         
         playSound("sounds\\fire.wav");
+        speeding = true;
         
         if (speedUpPressedRight) {
             
@@ -706,7 +706,36 @@ class Core extends JPanel {
 
     }
 
+    public void stopSpeedingLeft() {
+
+        speeding = false;
+        ball.setColor(Color.WHITE);
+        ball.setVx(ball.getVx() * 1/3);
+        speedUpPressedLeft = false;
+
+    }
+
+    public void stopSpeedingRight() {
+
+        speeding = false;
+        ball.setColor(Color.WHITE);
+        ball.setVx(ball.getVx() * 1/3);
+        speedUpPressedRight = false;
+
+    }
+
     public void slowDownRight() {
+        
+        if (speeding && ball.getVx() > 0) {
+
+            stopSpeedingLeft();
+
+        }
+        else if (speeding && ball.getVx() < 0) {
+
+            stopSpeedingRight();
+
+        }
         
         long delay = 1250;
         playSound("sounds\\freeze.wav");
@@ -730,11 +759,22 @@ class Core extends JPanel {
 
             }
 
-        }, delay);              
+        }, delay);  
 
     }
 
     public void slowDownLeft() {
+        
+        if (speeding && ball.getVx() > 0) {
+
+            stopSpeedingLeft();
+
+        }
+        else if (speeding && ball.getVx() < 0) {
+
+            stopSpeedingRight();
+
+        }
         
         long delay = 1250;
         playSound("sounds\\freeze.wav");
@@ -758,7 +798,7 @@ class Core extends JPanel {
 
             }
 
-        }, delay);              
+        }, delay);  
 
     }
 
